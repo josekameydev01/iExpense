@@ -7,9 +7,15 @@
 
 import SwiftUI
 
-struct User {
+@Observable
+class User {
     var firstName: String
     var lastName: String
+    
+    init(firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
 }
 
 struct ContentView: View {
@@ -20,8 +26,10 @@ struct ContentView: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
             Spacer()
-            TextField("First name", text: $user.firstName)
-            TextField("Last name", text: $user.lastName)
+            Form {
+                TextField("First name", text: $user.firstName)
+                TextField("Last name", text: $user.lastName)
+            }
             Spacer()
         }
         .padding()
