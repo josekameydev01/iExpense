@@ -26,22 +26,39 @@ struct ContentView: View {
             Text("iExpense")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-            Spacer()
-            VStack {
-                Section {
-                    TextField("First name", text: $user.firstName)
-                    TextField("Last name", text: $user.lastName)
+            
+            VStack(alignment: .leading,spacing: 12){
+                Group {
+                    Text("First Name")
+                        .font(.callout)
+                        .foregroundStyle(.gray)
+                    TextField("Enter your first name", text: $user.firstName)
+                        .textFieldStyle(.roundedBorder)
+                }
+                
+                Group {
+                    Text("Last Name")
+                        .font(.callout)
+                        .foregroundStyle(.gray)
+                    TextField("Enter your last name", text: $user.lastName)
+                        .textFieldStyle(.roundedBorder)
                 }
             }
             .padding()
+            
             Spacer()
-            Spacer()
-            Spacer()
-            if !user.firstName.isEmpty && !user.lastName.isEmpty {
-                Text("Welcome \(user.firstName) \(user.lastName)")
+            
+            VStack(spacing: 10) {
+                Text("First name: \(user.firstName)")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text("Last name: \(user.lastName)")
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .padding()
             Spacer()
+            
         }
+        .frame(maxHeight: .infinity)
     }
 }
 
