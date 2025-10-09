@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Observation
 
 @Observable
 class User {
@@ -22,17 +23,25 @@ struct ContentView: View {
     @State private var user = User(firstName: "", lastName: "")
     var body: some View {
         VStack {
-            Text("Welcome \(user.firstName) \(user.lastName)")
+            Text("iExpense")
                 .font(.largeTitle)
                 .fontWeight(.bold)
             Spacer()
-            Form {
-                TextField("First name", text: $user.firstName)
-                TextField("Last name", text: $user.lastName)
+            VStack {
+                Section {
+                    TextField("First name", text: $user.firstName)
+                    TextField("Last name", text: $user.lastName)
+                }
+            }
+            .padding()
+            Spacer()
+            Spacer()
+            Spacer()
+            if !user.firstName.isEmpty && !user.lastName.isEmpty {
+                Text("Welcome \(user.firstName) \(user.lastName)")
             }
             Spacer()
         }
-        .padding()
     }
 }
 
