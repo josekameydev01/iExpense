@@ -7,89 +7,34 @@
 
 import SwiftUI
 
-@Observable
-class User {
-    var firstName: String
-    var lastName: String
-    
-    init(firstName: String, lastName: String) {
-        self.firstName = firstName
-        self.lastName = lastName
-    }
-    
-    init() {
-        self.firstName = ""
-        self.lastName = ""
-    }
-}
-
-struct SecondView: View {
-    @Environment(\.dismiss) var dismiss
-    
-    let name: String
-    let lastName: String
-    
-    var body: some View {
-        Spacer()
-        Group {
-            Text("Welcome")
-            Text("\(name) \(lastName)")
-        }
-        .font(.largeTitle)
-        .fontWeight(.bold)
-        
-        Button("Dismiss") {
-            dismiss()
-        }
-        .buttonStyle(.borderedProminent)
-        Spacer()
-    }
-}
-
 struct ContentView: View {
-    @State private var user = User()
-    @State private var showingSheet = false
+    @State private var numbers = [Int]()
+    @State private var currentNumber = 1
+    
     var body: some View {
-        VStack {
-            Text("iExpense")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            
-            VStack(alignment: .leading,spacing: 12){
-                Group {
-                    Text("First Name")
-                        .font(.callout)
-                        .foregroundStyle(.gray)
-                    TextField("Enter your first name", text: $user.firstName)
-                        .textFieldStyle(.roundedBorder)
+        NavigationStack {
+            VStack {
+                List {
+                    ForEach(numbers, id: \.self) {
+                        Text("Row \($0)")
+                    }
+                    .onDelete(perform: removeRows)
                 }
                 
-                Group {
-                    Text("Last Name")
-                        .font(.callout)
-                        .foregroundStyle(.gray)
-                    TextField("Enter your last name", text: $user.lastName)
-                        .textFieldStyle(.roundedBorder)
+                Button("Add Number") {
+                    numbers.append(currentNumber)
+                    currentNumber += 1
                 }
+                .buttonStyle(.borderedProminent)
             }
-            .padding()
-            
-            Spacer()
-            
-            Button("Show Sheet") {
-                if !user.firstName.isEmpty && !user.lastName.isEmpty {
-                    showingSheet.toggle()
-                }
+            .toolbar {
+                EditButton()
             }
-            .buttonStyle(.borderedProminent)
-            
-            Spacer()
-            
         }
-        .frame(maxHeight: .infinity)
-        .sheet(isPresented: $showingSheet) {
-            SecondView(name: user.firstName, lastName: user.lastName)
-        }
+    }
+    
+    private func removeRows(at offsets: IndexSet) {
+        numbers.remove(atOffsets: offsets)
     }
 }
 
